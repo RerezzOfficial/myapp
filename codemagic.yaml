@@ -6,7 +6,7 @@ workflows:
     environment:
       vars:
         PACKAGE_NAME: "com.rezzdev.myapp"
-      node: 18.18.2
+      node: 20.11.1
       java: 17
     scripts:
       - name: Install Dependencies
