@@ -1,18 +1,27 @@
-scripts:
-  - name: Install Dependencies
-    script: |
-      npm install
-      npm run build || echo "No build script found"
-
-  - name: Add Android platform
-    script: |
-      npx cap add android
-
-  - name: Sync Capacitor
-    script: |
-      npx cap sync android
-
-  - name: Build APK
-    script: |
-      cd android
-      ./gradlew assembleDebug
+workflows:
+  build-android:
+    name: Build Android APK
+    max_build_duration: 30
+    instance_type: mac_mini_m2
+    environment:
+      vars:
+        PACKAGE_NAME: "com.rezzdev.myapp"
+      node: 20.11.1
+      java: 17
+    scripts:
+      - name: Install Dependencies
+        script: |
+          npm install
+          npm run build || echo "No build script found"
+      - name: Add Android platform
+        script: |
+          npx cap add android || echo "Android platform already added"
+      - name: Sync Capacitor
+        script: |
+          npx cap sync android
+      - name: Build APK
+        script: |
+          cd android
+          ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/**/*.apk
